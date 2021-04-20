@@ -4,18 +4,25 @@
 #include "order.h"
 #include "orderbook.h"
 #include "orderparser.h"
-
-#define TRACE(msg)            cout << msg << endl
-#define TRACE_ACTION(a, k, v) cout << a << " (" << k << ", " << v << ")" << endl
+#include "matchingEngine.h"
+#include "logger.h"
 
 int main()
 {
   OrderParser orderParser;
   OrderBook orderB;
-  const std::string filename = "order.json";
+  MatchingEngine matchE;
 
-  rapidjson::Document data = orderParser.orderJsonParse(filename);
-  orderB.storeOrders(data);
+  std::ofstream ofs(Logger::filename);
+  LOG::setStream(ofs);
+
+  const std::string orderFile = "order.json";
+  const std::string priceFile = "price.json";
+
+  rapidjson::Document orderData = orderParser.orderJsonParse(orderFile);
+  orderB.storeOrders(orderData);
+  rapidjson::Document marketData = orderParser.orderJsonParse(priceFile);
+  matchE.matchOrders(marketData, orderB);
 
   return 0;
 }

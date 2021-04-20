@@ -1,0 +1,20 @@
+[
+  {
+    "symbol": "FB",
+    "assetId": "aid_FB",
+    "exchange": "XNAS",
+    "price": 10.01
+  },
+  {
+    "symbol": "AAPL",
+    "assetId": "aid_AAPL",
+    "exchange": "XNAS",
+    "price": 16.01
+  },
+  {
+    "symbol": "AMZN",
+    "assetId": "aid_AMZN",
+    "exchange": "XNAS",
+    "price": 11.01
+  }
+]
