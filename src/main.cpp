@@ -5,16 +5,12 @@
 #include "orderbook.h"
 #include "orderparser.h"
 #include "matchingEngine.h"
-#include "logger.h"
 
 int main()
 {
   OrderParser orderParser;
   OrderBook orderB;
   MatchingEngine matchE;
-
-  std::ofstream ofs(Logger::filename);
-  LOG::setStream(ofs);
 
   const std::string orderFile = "order.json";
   const std::string priceFile = "price.json";
