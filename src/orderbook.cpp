@@ -5,6 +5,9 @@
 #include <locale>
 #include <iomanip>
 #include "orderbook.h"
+#include "logger.h"
+
+extern std::ofstream ofs;
 
 void OrderBook::storeOrders(rapidjson::Document& data) {
 
@@ -26,7 +29,8 @@ void OrderBook::storeOrders(rapidjson::Document& data) {
       this->sellOrders[orderObj.symbol][orderObj.price].push(orderObj);
     }
   }
-  std::cout << "Orders are stored " << std::endl;
+  LOG(INFO, ofs) << "Orders are stored " << std::endl;
+  //std::cout << "Orders are stored " << std::endl;
 
   /*
   std::cout  << " Buying orders " << std::endl;

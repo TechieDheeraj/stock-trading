@@ -1,0 +1,41 @@
+21-04-20 20:36:23 [INFO] main.cpp(main:26) == ============= Welcome to Stock Trading APP ============= 
+ 
+21-04-20 20:36:23 [INFO] main.cpp(main:30) == User Orders has been loaded 
+21-04-20 20:36:23 [INFO] orderbook.cpp(storeOrders:32) == Orders are stored 
+21-04-20 20:36:23 [INFO] main.cpp(main:33) == User Orders has been processed 
+21-04-20 20:36:23 [INFO] main.cpp(main:36) == Market Stream has been processed 
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:17) ==  market stock is FB price 10.01
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:51) ==  buyer qty:  24.92 seller qty 52.95
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:61) ==  Buyer 62a6d498-ff28-471d-a580-ac9795c58a09
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:62) ==  Seller e03c0092-924a-4444-a2c4-043b63c97c38
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:63) == [Buyer] Order ID: 62a6d498-ff28-471d-a580-ac9795c58a09 Executed order of quantity: 24.92
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:64) == [Seller] Order ID: e03c0092-924a-4444-a2c4-043b63c97c38 Executed order of quantity: 24.92
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:67) ==  seller sold shares to buyers of qty: 24.92
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:51) ==  buyer qty:  29.09 seller qty 28.03
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:79) ==  Buyer cec7a238-2433-4430-95dd-635f1c8a8813
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:80) ==  Seller e03c0092-924a-4444-a2c4-043b63c97c38
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:81) == [Buyer] Order ID: cec7a238-2433-4430-95dd-635f1c8a8813 Executed order of quantity: 28.03
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:82) == [Seller] Order ID: e03c0092-924a-4444-a2c4-043b63c97c38 Executed order of quantity: 28.03
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:85) == Buyer bought shares from sellers of qty 28.03
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:51) ==  buyer qty:  1.06 seller qty 41.93
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:61) ==  Buyer cec7a238-2433-4430-95dd-635f1c8a8813
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:62) ==  Seller 26fdd3af-6c7f-44b0-92c6-4da4902297ed
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:63) == [Buyer] Order ID: cec7a238-2433-4430-95dd-635f1c8a8813 Executed order of quantity: 1.06
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:64) == [Seller] Order ID: 26fdd3af-6c7f-44b0-92c6-4da4902297ed Executed order of quantity: 1.06
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:67) ==  seller sold shares to buyers of qty: 1.06
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:51) ==  buyer qty:  12.62 seller qty 40.87
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:61) ==  Buyer e734758c-6be8-4ecc-aa4e-5d227acf841c
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:62) ==  Seller 26fdd3af-6c7f-44b0-92c6-4da4902297ed
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:63) == [Buyer] Order ID: e734758c-6be8-4ecc-aa4e-5d227acf841c Executed order of quantity: 12.62
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:64) == [Seller] Order ID: 26fdd3af-6c7f-44b0-92c6-4da4902297ed Executed order of quantity: 12.62
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:67) ==  seller sold shares to buyers of qty: 12.62
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:17) ==  market stock is AAPL price 16.01
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:51) ==  buyer qty:  38.96 seller qty 72.16
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:61) ==  Buyer 6fd705e3-ffb7-481c-af52-0c59b2fe6102
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:62) ==  Seller d0f79b55-c8ee-4e37-97d6-f47674ef4f98
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:63) == [Buyer] Order ID: 6fd705e3-ffb7-481c-af52-0c59b2fe6102 Executed order of quantity: 38.96
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:64) == [Seller] Order ID: d0f79b55-c8ee-4e37-97d6-f47674ef4f98 Executed order of quantity: 38.96
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:67) ==  seller sold shares to buyers of qty: 38.96
+21-04-20 20:36:23 [INFO] matchingEngine.cpp(matchOrders:17) ==  market stock is AMZN price 11.01
+21-04-20 20:36:23 [INFO] main.cpp(main:40) == ============= Thanks for using Stock Trading APP ============= 
+
