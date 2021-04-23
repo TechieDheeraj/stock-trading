@@ -5,13 +5,16 @@
 #include "orderbook.h"
 #include "marketData.h"
 #include "matchingEngine.h"
+#include "logger.h"
 
 void MatchingEngine::matchOrders(rapidjson::Document& data, OrderBook& orderB) {
+
+  auto logger = LogClass::getLogger();
 
   for(rapidjson::Value &val: data.GetArray()) {
     MarketData market_data;
     market_data.deserialiser(val);
-    std::cout << " market stock is " << market_data.symbol << " price " << market_data.price << std::endl;
+    SPDLOG_LOGGER_INFO(logger, "Market stock is {}, price {} ", market_data.symbol, market_data.price);
     std::priority_queue<Order, std::vector<Order>, OrderComparator> *buyOrders = nullptr; 
     std::priority_queue<Order, std::vector<Order>, OrderComparator> *sellOrders = nullptr; 
     bool fBuyOrders = false;
@@ -45,21 +48,18 @@ void MatchingEngine::matchOrders(rapidjson::Document& data, OrderBook& orderB) {
       double bqty = buyOrders->top().quantity;
       double sqty = sellOrders->top().quantity;
 
-      std::cout << " buyer qty:  " << bqty << " seller qty " << sqty << std::endl;
+      SPDLOG_LOGGER_INFO(logger, "Buyer qty: {:03.2f} seller qty: {:03.2f}", bqty, sqty);
 
       double diff = bqty-sqty;
       if (diff == 0.0) {
-        TRACE_ACTION(buyOrders->top().orderId.c_str(), bqty);
-        TRACE_ACTION(sellOrders->top().orderId.c_str(), sqty);
+        SPDLOG_LOGGER_INFO(logger, "Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, bqty);
         buyOrders->pop();
         sellOrders->pop();
       } else if (diff < 0) { // seller has more quantity
         // sell shares and pop buyer from queue and drop event 
-        std::cout << " Buyer " << buyOrders->top().orderId.c_str() << std::endl;
-        std::cout << " Seller " << sellOrders->top().orderId.c_str() << std::endl;
-        TRACE_ACTION(buyOrders->top().orderId.c_str(), bqty);
-        TRACE_ACTION(sellOrders->top().orderId.c_str(), bqty); // bqty because seller could sell only bqties
-        std::cout << " seller sold shares to buyers of qty: " << bqty << std::endl;
+        SPDLOG_LOGGER_INFO(logger, "[Buyer] Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, bqty);
+        SPDLOG_LOGGER_INFO(logger, "[Seller] Order ID: {}, Executed order of quantity: {:03.2f}", sellOrders->top().orderId, bqty);
+        SPDLOG_LOGGER_INFO(logger, "Seller {} sold shares to buyer {} of qty: {:03.2f}", sellOrders->top().orderId, buyOrders->top().orderId, bqty);
         buyOrders->pop();
 
         // TODO: If quantity is used in comparator then first pop and repush the data rather than writing directly
@@ -71,11 +71,9 @@ void MatchingEngine::matchOrders(rapidjson::Document& data, OrderBook& orderB) {
         //sqty = ptr->quantity = abs(diff);  
       } else if (diff > 0) { // buyer has more quantity
         // sell shares and pop buyer from queue and drop event 
-        std::cout << " Buyer " << buyOrders->top().orderId.c_str() << std::endl;
-        std::cout << " Seller " << sellOrders->top().orderId.c_str() << std::endl;
-        TRACE_ACTION(sellOrders->top().orderId.c_str(), sqty);
-        TRACE_ACTION(buyOrders->top().orderId.c_str(), sqty); // sqty because buyer could buy only sqties
-        std::cout << "Buyer bought shares from sellers of qty " << sqty << std::endl;
+        SPDLOG_LOGGER_INFO(logger, "[Buyer] Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, sqty);
+        SPDLOG_LOGGER_INFO(logger, "[Seller] Order ID: {}, Executed order of quantity: {:03.2f}", sellOrders->top().orderId, sqty);
+        SPDLOG_LOGGER_INFO(logger, "Buyer {} bought shares from seller {} of qty: {:03.2f}", buyOrders->top().orderId, sellOrders->top().orderId, sqty);
         sellOrders->pop();
 
         // TODO: If quantity is used in comparator then first pop and repush the data rather than writing directly

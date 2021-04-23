@@ -5,9 +5,11 @@
 #include <locale>
 #include <iomanip>
 #include "orderbook.h"
+#include "logger.h"
 
 void OrderBook::storeOrders(rapidjson::Document& data) {
 
+  auto logger = LogClass::getLogger();
   for (rapidjson::Value &v: data.GetArray()) {
 
     Order orderObj; // create object and fill with data
@@ -26,7 +28,8 @@ void OrderBook::storeOrders(rapidjson::Document& data) {
       this->sellOrders[orderObj.symbol][orderObj.price].push(orderObj);
     }
   }
-  std::cout << "Orders are stored " << std::endl;
+  spdlog::info("Orders are stored ");
+  SPDLOG_LOGGER_INFO(logger, "Orders are stored ");
 
   /*
   std::cout  << " Buying orders " << std::endl;
