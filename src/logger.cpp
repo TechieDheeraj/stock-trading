@@ -22,7 +22,7 @@ LogClass::LogClass() {
   //spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [source %@] [function %!] %v");
   //spdlog::set_default_logger(m_logger);
   m_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] [%@] [%!] %v");
-
+  m_logger->flush_on(spdlog::level::info);
 }
 
 LogClass::~LogClass() {

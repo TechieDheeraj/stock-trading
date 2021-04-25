@@ -1,8 +1,45 @@
-
 #include <bits/stdc++.h>
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/document.h"
 #include "order.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
+std::string Order::serialise() {
+
+  rapidjson::StringBuffer s;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(s);
+
+  writer.StartObject();
+
+  writer.Key("orderId"); writer.String(this->orderId.c_str());
+  writer.Key("symbol"); writer.String(this->symbol.c_str());
+  writer.Key("assetId"); writer.String(this->assetId.c_str());
+  writer.Key("exchange"); writer.String(this->exchange.c_str());
+  writer.Key("assetType"); writer.String(this->assetType.c_str());
+  writer.Key("accountId"); writer.String(this->accountId.c_str());
+  writer.Key("portfolioId"); writer.String(this->portfolioId.c_str());
+  writer.Key("side"); writer.String(this->side.c_str());
+  writer.Key("orderType"); writer.String(this->orderType.c_str());
+  writer.Key("quantity"); writer.Double(this->quantity);
+  writer.Key("price"); writer.Double(this->price);
+  writer.Key("auxPrice"); writer.Double(this->auxPrice);
+  writer.Key("timeInForce"); writer.String(this->timeInForce.c_str());
+  writer.Key("stopPrice"); writer.Double(this->stopPrice);
+  writer.Key("routing"); writer.String(this->routing.c_str());
+  writer.Key("parentOrderId"); writer.String(this->parentOrderId.c_str());
+  writer.Key("bulkOrderId"); writer.String(this->bulkOrderId.c_str());
+  writer.Key("status"); writer.Uint(this->status);
+  writer.Key("altOrderId"); writer.String(this->altOrderId.c_str());
+  writer.Key("rebalanceId"); writer.String(this->rebalanceId.c_str());
+  writer.Key("modelId"); writer.String(this->modelId.c_str());
+  writer.Key("orderTime"); writer.String(this->orderTime.c_str());
+  writer.Key("updateDate"); writer.String(this->updateDate.c_str());
+
+  writer.EndObject();
+
+  return s.GetString();
+}
 
 void Order::deSerialise(rapidjson::Value& val) {
 

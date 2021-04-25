@@ -6,6 +6,7 @@
 #include "orderparser.h"
 #include "matchingEngine.h"
 #include "logger.h"
+#include "app.h"
 
 int main()
 {
@@ -14,6 +15,7 @@ int main()
   MatchingEngine matchE;
   LogClass logObj;
   auto logger = logObj.getLogger();
+  TradingApp app;
 
   const std::string orderFile = "order.json";
   const std::string priceFile = "price.json";
@@ -29,7 +31,10 @@ int main()
   rapidjson::Document marketData = orderParser.orderJsonParse(priceFile);
   spdlog::info("Market Stream has been processed\n");
   SPDLOG_LOGGER_INFO(logger, "Market Stream has been processed\n");
-  matchE.matchOrders(marketData, orderB);
+
+  app.start(orderB);
+
+  //matchE.matchOrders(marketData, orderB);
   spdlog::info(" ============= Thanks for using Stock Trading APP =============\n");
   SPDLOG_LOGGER_INFO(logger, " ============= Thanks for using Stock Trading APP =============\n");
 

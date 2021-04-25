@@ -9,4 +9,5 @@ class OrderParser {
   public:
     OrderParser() {}
     rapidjson::Document orderJsonParse(const std::string& filename);
+    rapidjson::Document orderJsonParse(const char *body);
 };
