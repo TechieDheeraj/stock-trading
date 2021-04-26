@@ -14,6 +14,7 @@ addons:
       - gcc-10
       - g++-10
       - cmake
+
 # Build steps
 script:
   - sudo ln -s /usr/bin/gcc-10 /usr/local/bin/gcc
