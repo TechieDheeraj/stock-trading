@@ -7,17 +7,28 @@
 
 using Writer = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void helper(Writer &writer, const std::pair<std::string, std::string> &p)
+template <typename T>
+struct data
+{
+  std::string first;
+  T second;
+
+  data(const std::string &a, const T &b) : first(a), second(b)
+  {
+  }
+};
+
+void helper(Writer &writer, const data<std::string> &p)
 {
   writer.Key(p.first.c_str());
   writer.String(p.second.c_str());
 }
-void helper(Writer &writer, const std::pair<std::string, double> &p)
+void helper(Writer &writer, const data<double> &p)
 {
   writer.Key(p.first.c_str());
   writer.Double(p.second);
 }
-void helper(Writer &writer, const std::pair<std::string, int> &p)
+void helper(Writer &writer, const data<int> &p)
 {
   writer.Key(p.first.c_str());
   writer.Int(p.second);
@@ -36,16 +47,32 @@ std::string GenerateJSON(const ValueTypes &...pairs)
   return s.GetString();
 }
 
-template <class A, class B>
-inline static constexpr std::pair<A, B> data(A a, B b)
-{
-  return std::make_pair(a, b);
-}
-
 std::string Order::serialise()
 {
   std::string result = GenerateJSON(
-      data("orderId", this->orderId));
+      data("orderId", this->orderId),
+      data("symbol", this->symbol),
+      data("assetId", this->assetId),
+      data("exchange", this->exchange),
+      data("assetType", this->assetType),
+      data("accountId", this->accountId),
+      data("portfolioId", this->portfolioId),
+      data("side", this->side),
+      data("orderType", this->orderType),
+      data("quantity", this->quantity),
+      data("price", this->price),
+      data("auxPrice", this->auxPrice),
+      data("timeInForce", this->timeInForce),
+      data("stopPrice", this->stopPrice),
+      data("routing", this->routing),
+      data("parentOrderId", this->parentOrderId),
+      data("bulkOrderId", this->bulkOrderId),
+      data("status", this->status),
+      data("altOrderId", this->altOrderId),
+      data("rebalanceId", this->rebalanceId),
+      data("modelId", this->modelId),
+      data("orderTime", this->orderTime),
+      data("updateDate", this->updateDate));
   return result;
 }
 
