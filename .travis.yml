@@ -1,11 +1,26 @@
+dist: trusty
+sudo: required
 language: cpp
 
 # Compiler selection
 compiler:
   - gcc
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-10
+      - g++-10
+      - cmake
 # Build steps
 script:
+  - sudo ln -s /usr/bin/gcc-10 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-10 /usr/local/bin/g++
+  - gcc -v && g++ -v && cmake --version
+  - export CC=/usr/bin/gcc-10
+  - export CXX=/usr/bin/g++-10
   - mkdir build
   - cd build
   - cmake ..
