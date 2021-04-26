@@ -1,4 +1,4 @@
-dist: trusty
+dist: groovy
 sudo: required
 language: cpp
 
