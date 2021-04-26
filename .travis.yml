@@ -1,27 +1,29 @@
 os:
   - linux
 
-dist: groovy
+dist: bionic
 language: cpp
 
 # Compiler selection
 compiler:
   - gcc
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-10
-      - g++-10
-      - cmake
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - gcc-8
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
 # Build steps
 script:
   - gcc -v && g++ -v && cmake --version
-  - export CC=gcc-10
-  - export CXX=g++-10
+  - export CC=gcc-8
+  - export CXX=g++-8
   - mkdir build
   - cd build
   - cmake ..
