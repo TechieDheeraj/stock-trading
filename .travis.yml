@@ -4,21 +4,19 @@ os:
 dist: bionic
 language: cpp
 
-
 # Compiler selection
-compiler:
-  - gcc
-    # works on Precise and Trusty
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-8
-            - gcc-8
-      env:
-        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+matrix:
+  # works on Precise and Trusty
+  - os: linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-8
+          - gcc-8
+    env:
+      - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
 # Build steps
 script:
