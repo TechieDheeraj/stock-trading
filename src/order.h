@@ -5,7 +5,7 @@
 #include "rapidjson/document.h"
 
 class Order {
-  private:
+  public:
     std::string orderId;
     std::string symbol; // AAPL, FB, AMZN ..etc
     std::string assetId;
@@ -33,6 +33,7 @@ class Order {
   public:
     friend class OrderBook;
     friend class MatchingEngine;
+    std::string serialise();
     void deSerialise(rapidjson::Value& val);
     inline bool is_buy() { return (this->side == "buy") ? true: false; }
     bool order_qty();

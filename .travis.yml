@@ -1,0 +1,25 @@
+os:
+  - linux
+
+dist: bionic
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - gcc-8
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+
+# Build steps
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .

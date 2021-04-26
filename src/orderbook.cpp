@@ -7,11 +7,69 @@
 #include "orderbook.h"
 #include "logger.h"
 
+Order OrderBook::searchOrder(const std::string& orderId) {
+
+  Order orderData;
+  auto logger = LogClass::getLogger();
+  std::priority_queue<Order, std::vector<Order>, OrderComparator> ordersPq;
+  auto itr = orderMetaData.find(orderId);
+
+  if (itr == orderMetaData.end()) {
+    SPDLOG_LOGGER_INFO(logger, "Order with OrderID: {} doesn't exist", orderId);
+    return {};
+  }
+
+  auto orderTup = itr->second;
+  std::string symbol = std::get<0>(orderTup);
+  std::string side = std::get<1>(orderTup);
+  double price = std::get<2>(orderTup);
+
+  if (side == "buy") {
+    ordersPq = buyOrders[symbol][price];
+  } else {
+    ordersPq = sellOrders[symbol][price];
+  }
+
+  while(!ordersPq.empty()) {
+    if (ordersPq.top().orderId == orderId) {
+      orderData = ordersPq.top();
+    }
+    ordersPq.pop();
+  }
+
+  return orderData;
+}
+
+inline void OrderBook::storeOrder(rapidjson::Value& v) {
+
+    Order orderObj; // create object and fill with data
+    orderObj.deSerialise(v);
+
+    // Storing meta data information
+    std::tuple<std::string, std::string, double> orderTuple = make_tuple(orderObj.symbol, orderObj.side, orderObj.price);
+
+    this->orderMetaData[orderObj.orderId] = orderTuple;
+
+    std::tm t = {};
+    std::istringstream ss(orderObj.orderTime);
+
+    if (ss >> std::get_time(&t, "%Y-%m-%dT%H:%M:%S")) {
+      orderObj.epochtime = std::mktime(&t);
+    }
+
+    if (orderObj.is_buy()) {
+      this->buyOrders[orderObj.symbol][orderObj.price].push(orderObj);
+    } else {
+      this->sellOrders[orderObj.symbol][orderObj.price].push(orderObj);
+    }
+}
+
 void OrderBook::storeOrders(rapidjson::Document& data) {
 
   auto logger = LogClass::getLogger();
   for (rapidjson::Value &v: data.GetArray()) {
 
+    /*
     Order orderObj; // create object and fill with data
     orderObj.deSerialise(v);
 
@@ -27,6 +85,9 @@ void OrderBook::storeOrders(rapidjson::Document& data) {
     } else {
       this->sellOrders[orderObj.symbol][orderObj.price].push(orderObj);
     }
+    */
+
+    storeOrder(v);
   }
   spdlog::info("Orders are stored ");
   SPDLOG_LOGGER_INFO(logger, "Orders are stored ");
