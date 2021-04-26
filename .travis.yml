@@ -1,5 +1,7 @@
+os:
+  - linux
+
 dist: groovy
-sudo: required
 language: cpp
 
 # Compiler selection
@@ -17,11 +19,9 @@ addons:
 
 # Build steps
 script:
-  - sudo ln -s /usr/bin/gcc-10 /usr/local/bin/gcc
-  - sudo ln -s /usr/bin/g++-10 /usr/local/bin/g++
   - gcc -v && g++ -v && cmake --version
-  - export CC=/usr/bin/gcc-10
-  - export CXX=/usr/bin/g++-10
+  - export CC=gcc-10
+  - export CXX=g++-10
   - mkdir build
   - cd build
   - cmake ..
