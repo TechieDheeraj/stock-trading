@@ -5,7 +5,7 @@
 #include "rapidjson/document.h"
 
 class Order {
-  private:
+  public:
     std::string orderId;
     std::string symbol; // AAPL, FB, AMZN ..etc
     std::string assetId;
