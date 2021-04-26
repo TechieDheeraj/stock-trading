@@ -1,0 +1,11 @@
+
+#include <iostream>
+#include "order.h"
+
+int main()
+{
+  Order order;
+
+  std::cout << order.serialise() << std::endl;
+  return 0;
+}

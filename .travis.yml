@@ -1,0 +1,11 @@
+language: cpp
+
+# Compiler selection
+compiler:
+  - gcc
+
+# Build steps
+script:
+  - cd build
+  - cmake ..
+  - cmake --build .
