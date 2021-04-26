@@ -9,11 +9,12 @@
 #include <httplib.h>
 #include "app.h"
 
-TradingApp::TradingApp(const std::string& ip, uint16_t port):ip_addr(ip), port(port) { }
+TradingApp::TradingApp(const std::string &ip, uint16_t port) : ip_addr(ip), port(port) {}
 
 TradingApp::~TradingApp() {}
 
-std::string TradingApp::getOrders(OrderBook& ob, const std::string& orderId) {
+std::string TradingApp::getOrders(OrderBook &ob, const std::string &orderId)
+{
 
   std::string response;
   Order orderData = ob.searchOrder(orderId);
@@ -22,10 +23,12 @@ std::string TradingApp::getOrders(OrderBook& ob, const std::string& orderId) {
   return response;
 }
 
-void TradingApp::putOrder(OrderBook& ob, const std::string& orderId) {
+void TradingApp::putOrder(OrderBook &ob, const std::string &orderId)
+{
 }
 
-void TradingApp::uploadOrders(OrderBook& ob, const std::string& body) {
+void TradingApp::uploadOrders(OrderBook &ob, const std::string &body)
+{
   OrderParser orderparser;
 
   auto logger = LogClass::getLogger();
@@ -34,13 +37,14 @@ void TradingApp::uploadOrders(OrderBook& ob, const std::string& body) {
     return;
 
   SPDLOG_LOGGER_INFO(logger, "Orders are getting uploaded... ");
-  
+
   rapidjson::Document data = orderparser.orderJsonParse(body.c_str());
 
   ob.storeOrders(data);
 }
 
-void TradingApp::uploadPrice(OrderBook& ob, const std::string& body) {
+void TradingApp::uploadPrice(OrderBook &ob, const std::string &body)
+{
   OrderParser orderparser;
   MatchingEngine matchE;
 
@@ -55,11 +59,13 @@ void TradingApp::uploadPrice(OrderBook& ob, const std::string& body) {
   matchE.matchOrders(data, ob);
 }
 
-std::string dump_headers(const httplib::Headers &headers) {
+std::string dump_headers(const httplib::Headers &headers)
+{
   std::string s;
   char buf[BUFSIZ];
 
-  for (const auto &x : headers) {
+  for (const auto &x : headers)
+  {
     snprintf(buf, sizeof(buf), "%s: %s\n", x.first.c_str(), x.second.c_str());
     s += buf;
   }
@@ -67,7 +73,8 @@ std::string dump_headers(const httplib::Headers &headers) {
   return s;
 }
 
-std::string TradingApp::log(const httplib::Request &req, const httplib::Response &res) {
+std::string TradingApp::log(const httplib::Request &req, const httplib::Response &res)
+{
 
   std::string s;
   char buf[BUFSIZ];
@@ -79,7 +86,8 @@ std::string TradingApp::log(const httplib::Request &req, const httplib::Response
   s += buf;
 
   std::string query;
-  for (auto it = req.params.begin(); it != req.params.end(); ++it) {
+  for (auto it = req.params.begin(); it != req.params.end(); ++it)
+  {
     const auto &x = *it;
     snprintf(buf, sizeof(buf), "%c%s=%s",
              (it == req.params.begin()) ? '?' : '&', x.first.c_str(),
@@ -100,10 +108,10 @@ std::string TradingApp::log(const httplib::Request &req, const httplib::Response
   return s;
 }
 
-void TradingApp::start(OrderBook& ob) {
-
+void TradingApp::start(OrderBook &ob)
+{
   httplib::Server svr;
-  
+
   svr.Post("/ome/orders", [&](const httplib::Request &req, httplib::Response &res) {
     std::cout << "Market Orders " << req.body << std::endl;
 
@@ -120,13 +128,13 @@ void TradingApp::start(OrderBook& ob) {
     res.set_content(body, "text/plain");
   });
 
-  svr.Get(R"(/ome/orders/(.*))", [&](const httplib::Request &req, httplib::Response &res) {
+  svr.Get(R"(/ome/orders/([0-9a-zA-Z_-]+))", [&](const httplib::Request &req, httplib::Response &res) {
     auto response = this->getOrders(ob, req.matches[1]);
     res.set_content(response, "application/json");
   });
 
   svr.Get("/stop",
-    [&](const httplib::Request & /*req*/, httplib::Response & /*res*/) { svr.stop(); });
+          [&](const httplib::Request & /*req*/, httplib::Response & /*res*/) { svr.stop(); });
 
   svr.set_error_handler([](const httplib::Request & /*req*/, httplib::Response &res) {
     const char *fmt = "<p>Error Status: <span style='color:red;'>%d</span></p>";
@@ -142,7 +150,8 @@ void TradingApp::start(OrderBook& ob) {
 
   auto base_dir = "./";
 
-  if (!svr.set_mount_point("/", base_dir)) {
+  if (!svr.set_mount_point("/", base_dir))
+  {
     std::cout << "The specified base directory doesn't exist...";
     return;
   }
