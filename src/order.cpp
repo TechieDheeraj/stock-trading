@@ -36,10 +36,16 @@ std::string GenerateJSON(const ValueTypes &...pairs)
   return s.GetString();
 }
 
+template <class A, class B>
+inline static constexpr std::pair<A, B> data(A a, B b)
+{
+  return std::make_pair(a, b);
+}
+
 std::string Order::serialise()
 {
   std::string result = GenerateJSON(
-      std::make_pair("orderId", this->orderId));
+      data("orderId", this->orderId));
   return result;
 }
 
