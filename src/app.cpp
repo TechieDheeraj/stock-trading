@@ -9,12 +9,20 @@
 #include <httplib.h>
 #include "app.h"
 
+<<<<<<< HEAD
 TradingApp::TradingApp(const std::string &ip, uint16_t port) : ip_addr(ip), port(port) {}
 
 TradingApp::~TradingApp() {}
 
 std::string TradingApp::getOrders(OrderBook &ob, const std::string &orderId)
 {
+=======
+TradingApp::TradingApp(const std::string& ip, uint16_t port):ip_addr(ip), port(port) { }
+
+TradingApp::~TradingApp() {}
+
+std::string TradingApp::getOrders(OrderBook& ob, const std::string& orderId) {
+>>>>>>> base/httpSupport
 
   std::string response;
   Order orderData = ob.searchOrder(orderId);
@@ -23,12 +31,19 @@ std::string TradingApp::getOrders(OrderBook &ob, const std::string &orderId)
   return response;
 }
 
+<<<<<<< HEAD
 void TradingApp::putOrder(OrderBook &ob, const std::string &orderId)
 {
 }
 
 void TradingApp::uploadOrders(OrderBook &ob, const std::string &body)
 {
+=======
+void TradingApp::putOrder(OrderBook& ob, const std::string& orderId) {
+}
+
+void TradingApp::uploadOrders(OrderBook& ob, const std::string& body) {
+>>>>>>> base/httpSupport
   OrderParser orderparser;
 
   auto logger = LogClass::getLogger();
@@ -37,14 +52,22 @@ void TradingApp::uploadOrders(OrderBook &ob, const std::string &body)
     return;
 
   SPDLOG_LOGGER_INFO(logger, "Orders are getting uploaded... ");
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> base/httpSupport
   rapidjson::Document data = orderparser.orderJsonParse(body.c_str());
 
   ob.storeOrders(data);
 }
 
+<<<<<<< HEAD
 void TradingApp::uploadPrice(OrderBook &ob, const std::string &body)
 {
+=======
+void TradingApp::uploadPrice(OrderBook& ob, const std::string& body) {
+>>>>>>> base/httpSupport
   OrderParser orderparser;
   MatchingEngine matchE;
 
@@ -59,6 +82,7 @@ void TradingApp::uploadPrice(OrderBook &ob, const std::string &body)
   matchE.matchOrders(data, ob);
 }
 
+<<<<<<< HEAD
 std::string dump_headers(const httplib::Headers &headers)
 {
   std::string s;
@@ -66,6 +90,13 @@ std::string dump_headers(const httplib::Headers &headers)
 
   for (const auto &x : headers)
   {
+=======
+std::string dump_headers(const httplib::Headers &headers) {
+  std::string s;
+  char buf[BUFSIZ];
+
+  for (const auto &x : headers) {
+>>>>>>> base/httpSupport
     snprintf(buf, sizeof(buf), "%s: %s\n", x.first.c_str(), x.second.c_str());
     s += buf;
   }
@@ -73,8 +104,12 @@ std::string dump_headers(const httplib::Headers &headers)
   return s;
 }
 
+<<<<<<< HEAD
 std::string TradingApp::log(const httplib::Request &req, const httplib::Response &res)
 {
+=======
+std::string TradingApp::log(const httplib::Request &req, const httplib::Response &res) {
+>>>>>>> base/httpSupport
 
   std::string s;
   char buf[BUFSIZ];
@@ -86,8 +121,12 @@ std::string TradingApp::log(const httplib::Request &req, const httplib::Response
   s += buf;
 
   std::string query;
+<<<<<<< HEAD
   for (auto it = req.params.begin(); it != req.params.end(); ++it)
   {
+=======
+  for (auto it = req.params.begin(); it != req.params.end(); ++it) {
+>>>>>>> base/httpSupport
     const auto &x = *it;
     snprintf(buf, sizeof(buf), "%c%s=%s",
              (it == req.params.begin()) ? '?' : '&', x.first.c_str(),
@@ -108,10 +147,17 @@ std::string TradingApp::log(const httplib::Request &req, const httplib::Response
   return s;
 }
 
+<<<<<<< HEAD
 void TradingApp::start(OrderBook &ob)
 {
   httplib::Server svr;
 
+=======
+void TradingApp::start(OrderBook& ob) {
+
+  httplib::Server svr;
+  
+>>>>>>> base/httpSupport
   svr.Post("/ome/orders", [&](const httplib::Request &req, httplib::Response &res) {
     std::cout << "Market Orders " << req.body << std::endl;
 
@@ -128,13 +174,21 @@ void TradingApp::start(OrderBook &ob)
     res.set_content(body, "text/plain");
   });
 
+<<<<<<< HEAD
   svr.Get(R"(/ome/orders/([0-9a-zA-Z_-]+))", [&](const httplib::Request &req, httplib::Response &res) {
+=======
+  svr.Get(R"(/ome/orders/(.*))", [&](const httplib::Request &req, httplib::Response &res) {
+>>>>>>> base/httpSupport
     auto response = this->getOrders(ob, req.matches[1]);
     res.set_content(response, "application/json");
   });
 
   svr.Get("/stop",
+<<<<<<< HEAD
           [&](const httplib::Request & /*req*/, httplib::Response & /*res*/) { svr.stop(); });
+=======
+    [&](const httplib::Request & /*req*/, httplib::Response & /*res*/) { svr.stop(); });
+>>>>>>> base/httpSupport
 
   svr.set_error_handler([](const httplib::Request & /*req*/, httplib::Response &res) {
     const char *fmt = "<p>Error Status: <span style='color:red;'>%d</span></p>";
@@ -150,8 +204,12 @@ void TradingApp::start(OrderBook &ob)
 
   auto base_dir = "./";
 
+<<<<<<< HEAD
   if (!svr.set_mount_point("/", base_dir))
   {
+=======
+  if (!svr.set_mount_point("/", base_dir)) {
+>>>>>>> base/httpSupport
     std::cout << "The specified base directory doesn't exist...";
     return;
   }
