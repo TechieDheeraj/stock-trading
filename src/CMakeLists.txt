@@ -12,7 +12,7 @@ file(GLOB SrcFiles
 
 add_executable(stock-trading ${SrcFiles})
 target_include_directories(stock-trading PUBLIC ../include)
-target_compile_options(stock-trading PUBLIC "-pthread")
+target_compile_options(stock-trading PUBLIC "-lpthread")
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
