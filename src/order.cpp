@@ -5,40 +5,69 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-std::string Order::serialise() {
+using Writer = rapidjson::Writer<rapidjson::StringBuffer>;
 
+template <typename T>
+struct data {
+  std::string first;
+  T second;
+
+  data(const std::string &a, const T &b) : first(a), second(b)
+  {
+  }
+};
+
+void helper(Writer &writer, const data<std::string> &p) {
+  writer.Key(p.first.c_str());
+  writer.String(p.second.c_str());
+}
+void helper(Writer &writer, const data<double> &p) {
+  writer.Key(p.first.c_str());
+  writer.Double(p.second);
+}
+void helper(Writer &writer, const data<int> &p) {
+  writer.Key(p.first.c_str());
+  writer.Int(p.second);
+}
+
+template <typename... ValueTypes>
+std::string GenerateJSON(const ValueTypes &...pairs) {
   rapidjson::StringBuffer s;
   rapidjson::Writer<rapidjson::StringBuffer> writer(s);
 
   writer.StartObject();
-
-  writer.Key("orderId"); writer.String(this->orderId.c_str());
-  writer.Key("symbol"); writer.String(this->symbol.c_str());
-  writer.Key("assetId"); writer.String(this->assetId.c_str());
-  writer.Key("exchange"); writer.String(this->exchange.c_str());
-  writer.Key("assetType"); writer.String(this->assetType.c_str());
-  writer.Key("accountId"); writer.String(this->accountId.c_str());
-  writer.Key("portfolioId"); writer.String(this->portfolioId.c_str());
-  writer.Key("side"); writer.String(this->side.c_str());
-  writer.Key("orderType"); writer.String(this->orderType.c_str());
-  writer.Key("quantity"); writer.Double(this->quantity);
-  writer.Key("price"); writer.Double(this->price);
-  writer.Key("auxPrice"); writer.Double(this->auxPrice);
-  writer.Key("timeInForce"); writer.String(this->timeInForce.c_str());
-  writer.Key("stopPrice"); writer.Double(this->stopPrice);
-  writer.Key("routing"); writer.String(this->routing.c_str());
-  writer.Key("parentOrderId"); writer.String(this->parentOrderId.c_str());
-  writer.Key("bulkOrderId"); writer.String(this->bulkOrderId.c_str());
-  writer.Key("status"); writer.Uint(this->status);
-  writer.Key("altOrderId"); writer.String(this->altOrderId.c_str());
-  writer.Key("rebalanceId"); writer.String(this->rebalanceId.c_str());
-  writer.Key("modelId"); writer.String(this->modelId.c_str());
-  writer.Key("orderTime"); writer.String(this->orderTime.c_str());
-  writer.Key("updateDate"); writer.String(this->updateDate.c_str());
-
+  (helper(writer, pairs), ...);
   writer.EndObject();
 
   return s.GetString();
+}
+
+std::string Order::serialise() {
+  std::string result = GenerateJSON(
+      data("orderId", this->orderId),
+      data("symbol", this->symbol),
+      data("assetId", this->assetId),
+      data("exchange", this->exchange),
+      data("assetType", this->assetType),
+      data("accountId", this->accountId),
+      data("portfolioId", this->portfolioId),
+      data("side", this->side),
+      data("orderType", this->orderType),
+      data("quantity", this->quantity),
+      data("price", this->price),
+      data("auxPrice", this->auxPrice),
+      data("timeInForce", this->timeInForce),
+      data("stopPrice", this->stopPrice),
+      data("routing", this->routing),
+      data("parentOrderId", this->parentOrderId),
+      data("bulkOrderId", this->bulkOrderId),
+      data("status", this->status),
+      data("altOrderId", this->altOrderId),
+      data("rebalanceId", this->rebalanceId),
+      data("modelId", this->modelId),
+      data("orderTime", this->orderTime),
+      data("updateDate", this->updateDate));
+  return result;
 }
 
 void Order::deSerialise(rapidjson::Value& val) {
