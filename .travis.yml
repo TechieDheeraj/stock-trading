@@ -4,6 +4,7 @@ os:
 dist: bionic
 language: cpp
 
+
 # Compiler selection
 compiler:
   - gcc
