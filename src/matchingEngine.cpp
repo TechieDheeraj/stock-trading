@@ -52,7 +52,10 @@ void MatchingEngine::matchOrders(rapidjson::Document& data, OrderBook& orderB) {
 
       double diff = bqty-sqty;
       if (diff == 0.0) {
-        SPDLOG_LOGGER_INFO(logger, "Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, bqty);
+        SPDLOG_LOGGER_INFO(logger, "[Buyer] Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, bqty);
+        SPDLOG_LOGGER_INFO(logger, "[Seller] Order ID: {}, Executed order of quantity: {:03.2f}", sellOrders->top().orderId, bqty);
+        orderB.orderMetaData.erase(buyOrders->top().orderId);
+        orderB.orderMetaData.erase(sellOrders->top().orderId);
         buyOrders->pop();
         sellOrders->pop();
       } else if (diff < 0) { // seller has more quantity
@@ -60,6 +63,7 @@ void MatchingEngine::matchOrders(rapidjson::Document& data, OrderBook& orderB) {
         SPDLOG_LOGGER_INFO(logger, "[Buyer] Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, bqty);
         SPDLOG_LOGGER_INFO(logger, "[Seller] Order ID: {}, Executed order of quantity: {:03.2f}", sellOrders->top().orderId, bqty);
         SPDLOG_LOGGER_INFO(logger, "Seller {} sold shares to buyer {} of qty: {:03.2f}", sellOrders->top().orderId, buyOrders->top().orderId, bqty);
+        orderB.orderMetaData.erase(buyOrders->top().orderId);
         buyOrders->pop();
 
         // TODO: If quantity is used in comparator then first pop and repush the data rather than writing directly
@@ -74,6 +78,7 @@ void MatchingEngine::matchOrders(rapidjson::Document& data, OrderBook& orderB) {
         SPDLOG_LOGGER_INFO(logger, "[Buyer] Order ID: {}, Executed order of quantity: {:03.2f}", buyOrders->top().orderId, sqty);
         SPDLOG_LOGGER_INFO(logger, "[Seller] Order ID: {}, Executed order of quantity: {:03.2f}", sellOrders->top().orderId, sqty);
         SPDLOG_LOGGER_INFO(logger, "Buyer {} bought shares from seller {} of qty: {:03.2f}", buyOrders->top().orderId, sellOrders->top().orderId, sqty);
+        orderB.orderMetaData.erase(sellOrders->top().orderId);
         sellOrders->pop();
 
         // TODO: If quantity is used in comparator then first pop and repush the data rather than writing directly

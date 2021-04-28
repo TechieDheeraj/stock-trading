@@ -96,3 +96,7 @@ void Order::deSerialise(rapidjson::Value& val) {
     this->orderTime = sanitize<std::string>(val["orderTime"]);
     this->updateDate = sanitize<std::string>(val["updateDate"]);
 }
+
+std::string Order::getOrderId() {
+  return orderId;
+}

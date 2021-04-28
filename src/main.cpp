@@ -22,7 +22,7 @@ int main()
 
   spdlog::info("============= Welcome to Stock Trading APP =============\n");
   SPDLOG_LOGGER_INFO(logger, "============= Welcome to Stock Trading APP =============\n");
-  rapidjson::Document orderData = orderParser.orderJsonParse(orderFile);
+  /*rapidjson::Document orderData = orderParser.orderJsonParse(orderFile);
   spdlog::info("User Orders has been loaded ");
   SPDLOG_LOGGER_INFO(logger, "User Orders has been loaded ");
   orderB.storeOrders(orderData);
@@ -31,6 +31,7 @@ int main()
   rapidjson::Document marketData = orderParser.orderJsonParse(priceFile);
   spdlog::info("Market Stream has been processed\n");
   SPDLOG_LOGGER_INFO(logger, "Market Stream has been processed\n");
+  */
 
   app.start(orderB);
 

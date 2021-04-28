@@ -34,6 +34,7 @@ class Order {
     friend class OrderBook;
     friend class MatchingEngine;
     std::string serialise();
+    std::string getOrderId();
     void deSerialise(rapidjson::Value& val);
     inline bool is_buy() { return (this->side == "buy") ? true: false; }
     bool order_qty();

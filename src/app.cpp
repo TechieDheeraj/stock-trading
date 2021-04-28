@@ -15,8 +15,11 @@ TradingApp::~TradingApp() {}
 
 std::string TradingApp::getOrders(OrderBook& ob, const std::string& orderId) {
 
-  std::string response;
+  std::string response = "";
   Order orderData = ob.searchOrder(orderId);
+
+  if (orderData.getOrderId() == "")
+    return response;
 
   response = orderData.serialise();
   return response;
@@ -122,6 +125,10 @@ void TradingApp::start(OrderBook& ob) {
 
   svr.Get(R"(/ome/orders/(.*))", [&](const httplib::Request &req, httplib::Response &res) {
     auto response = this->getOrders(ob, req.matches[1]);
+    if (response == "") {
+      res.status = 404;
+      response += "Order: " + req.matches.str(1) + " not found";
+    }
     res.set_content(response, "application/json");
   });
 
@@ -129,10 +136,11 @@ void TradingApp::start(OrderBook& ob) {
     [&](const httplib::Request & /*req*/, httplib::Response & /*res*/) { svr.stop(); });
 
   svr.set_error_handler([](const httplib::Request & /*req*/, httplib::Response &res) {
-    const char *fmt = "<p>Error Status: <span style='color:red;'>%d</span></p>";
+    //const char *fmt = "<p>Error Status: <span style='color:red;'>%d</span></p>";
+    const char *fmt = "{\"Error Status\":%d, \"Error Message\": \"%s\" }";
     char buf[BUFSIZ];
-    snprintf(buf, sizeof(buf), fmt, res.status);
-    res.set_content(buf, "text/html");
+    snprintf(buf, sizeof(buf), fmt, res.status, res.body.c_str());
+    res.set_content(buf, "application/json");
   });
 
   svr.set_logger(
