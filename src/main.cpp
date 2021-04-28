@@ -17,8 +17,8 @@ int main()
   auto logger = logObj.getLogger();
   TradingApp app;
 
-  const std::string orderFile = "order.json";
-  const std::string priceFile = "price.json";
+  const std::string orderFile = "configs/order.json";
+  const std::string priceFile = "configs/price.json";
 
   spdlog::info("============= Welcome to Stock Trading APP =============\n");
   SPDLOG_LOGGER_INFO(logger, "============= Welcome to Stock Trading APP =============\n");
