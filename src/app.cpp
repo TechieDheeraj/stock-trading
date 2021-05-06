@@ -25,7 +25,20 @@ std::string TradingApp::getOrders(OrderBook& ob, const std::string& orderId) {
   return response;
 }
 
-void TradingApp::putOrder(OrderBook& ob, const std::string& orderId) {
+std::string TradingApp::putOrder(OrderBook& ob, const std::string& orderId, const std::string& body) {
+
+  OrderParser orderparser;
+
+  std::string response = "";
+  Order orderData = ob.searchOrder(orderId);
+
+  if (orderData.getOrderId() == "")
+    return response;
+
+  rapidjson::Document data = orderparser.orderJsonParse(body.c_str());
+
+  ob.updateOrder(data);
+  return "";
 }
 
 void TradingApp::uploadOrders(OrderBook& ob, const std::string& body) {
@@ -121,6 +134,21 @@ void TradingApp::start(OrderBook& ob) {
     this->uploadPrice(ob, req.body);
     auto body = dump_headers(req.headers);
     res.set_content(body, "text/plain");
+  });
+
+  svr.Put(R"(/ome/orders/(.*))", [&](const httplib::Request &req, httplib::Response &res) {
+    std::cout << "Put Data " << req.body << std::endl;
+
+    auto response = this->putOrder(ob, req.matches[1], req.body);
+
+    if (response == "") {
+      res.status = 404;
+      response += "Order: " + req.matches.str(1) + " not found";
+      res.set_content(response, "application/json");
+    } else {
+      auto body = dump_headers(req.headers);
+      res.set_content(body, "text/plain");
+      }
   });
 
   svr.Get(R"(/ome/orders/(.*))", [&](const httplib::Request &req, httplib::Response &res) {

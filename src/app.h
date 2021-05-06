@@ -19,7 +19,7 @@ class TradingApp {
     ~TradingApp();
     void start(OrderBook& ob);
     std::string getOrders(OrderBook& ob, const std::string& orderId);
-    void putOrder(OrderBook& ob, const std::string& orderId);
+    std::string putOrder(OrderBook& ob, const std::string& orderId, const std::string& body);
     void uploadOrders(OrderBook& ob, const std::string& body);
     void uploadPrice(OrderBook& ob, const std::string& body);
     std::string log(const httplib::Request &req, const httplib::Response &res);

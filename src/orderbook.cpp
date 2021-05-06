@@ -6,17 +6,18 @@
 #include <iomanip>
 #include "orderbook.h"
 #include "logger.h"
+#include "priorityQueue.h"
 
-Order OrderBook::searchOrder(const std::string& orderId) {
+PriorityQueue* OrderBook::searchMetaData(const std::string& orderId) {
 
   Order orderData;
-  auto logger = LogClass::getLogger();
-  std::priority_queue<Order, std::vector<Order>, OrderComparator> ordersPq;
+  auto logger = LogClass::getLogger(); 
+  PriorityQueue <Order, OrderComparator> *ordersPq;
   auto itr = orderMetaData.find(orderId);
 
   if (itr == orderMetaData.end()) {
     SPDLOG_LOGGER_INFO(logger, "Order with OrderID: {} doesn't exist", orderId);
-    return {};
+    return nullptr;
   }
 
   auto orderTup = itr->second;
@@ -25,19 +26,38 @@ Order OrderBook::searchOrder(const std::string& orderId) {
   double price = std::get<2>(orderTup);
 
   if (side == "buy") {
-    ordersPq = buyOrders[symbol][price];
+    ordersPq = &buyOrders[symbol][price];
   } else {
-    ordersPq = sellOrders[symbol][price];
+    ordersPq = &sellOrders[symbol][price];
   }
 
-  while(!ordersPq.empty()) {
-    if (ordersPq.top().orderId == orderId) {
-      orderData = ordersPq.top();
-    }
-    ordersPq.pop();
+  return orderPq;
+}
+
+Order OrderBook::searchOrder(const std::string& orderId) {
+
+  auto pq = searchMetaData(orderId);
+  if (pq == nullptr) {
+    return {};
   }
+
+  pq.search(
+  while(!ordersPq.empty()) {
+  if (ordersPq.top().orderId == orderId) {
+    orderData = ordersPq.top();
+  }
+  ordersPq.pop();
+}
 
   return orderData;
+}
+
+void OrderBook::updateOrder(const std::string& orderId, rapidjson::Document& data) {
+
+}
+
+void OrderBook::cancelOrder(const std::string& orderId, rapidjson::Document& data) {
+
 }
 
 inline void OrderBook::storeOrder(rapidjson::Value& v) {
